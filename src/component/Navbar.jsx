@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
     const state = useSelector((state) => state.handleCart);
@@ -8,8 +9,15 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn');
-        navigate('/'); 
+        Swal.fire({
+            title: 'Logout Berhasil!',
+            text: 'Anda telah berhasil logout.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+        }).then(() => {
+            localStorage.removeItem('isLoggedIn');
+            navigate('/');
+        });
     };
 
     const isLoggedIn = localStorage.getItem('isLoggedIn');
