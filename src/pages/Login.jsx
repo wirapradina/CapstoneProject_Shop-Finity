@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -14,7 +15,6 @@ const Login = () => {
         setError('');
 
         try {
-            // Gunakan URL dasar dari .env dan tambahkan endpoint /users
             const response = await fetch(`${process.env.REACT_APP_API_URL}/users`);
             const users = await response.json();
 
@@ -24,13 +24,20 @@ const Login = () => {
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('username', user.username);
 
-                navigate('/');
+                Swal.fire({
+                    title: 'Login Berhasil!',
+                    text: `Selamat datang, ${user.username}!`,
+                    icon: 'success',
+                    confirmButtonText: 'OK',
+                }).then(() => {
+                    navigate('/');
+                });
             } else {
-                setError('Incorrect email or password');
+                setError('Email atau password salah.');
             }
         } catch (error) {
             console.error('Error fetching users:', error);
-            setError('An error occurred, try again.');
+            setError('Terjadi kesalahan, coba lagi.');
         } finally {
             setIsLoading(false);
         }
