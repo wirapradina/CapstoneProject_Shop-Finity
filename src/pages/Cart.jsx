@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Cart = () => {
     const cart = useSelector((state) => state.handleCart);
@@ -15,7 +16,7 @@ const Cart = () => {
         }
     };
 
-    // Fungsi mengurangi item dri cart 
+    // Fungsi mengurangi item dari cart 
     const decreaseQuantity = (product) => {
         if (product.qty > 1) {
             dispatch({ type: 'DECREASEITEM', payload: product });
@@ -34,16 +35,17 @@ const Cart = () => {
 
     // Fungsi checkout
     const handleCheckout = () => {
-        alert("Checkout berhasil!");
+        Swal.fire({
+            title: 'Checkout Berhasil!',
+            text: 'Terima kasih telah berbelanja di toko kami.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            // Mengosongkan cart di Redux
+            dispatch({ type: 'CLEARCART' });
 
-        // Mengosongkan cart di Redux
-        dispatch({ type: 'CLEARCART' });
-
-        navigate("/");
-    };
-
-    const stock = {
-        1: 10,
+            navigate("/");
+        });
     };
 
     useEffect(() => {
