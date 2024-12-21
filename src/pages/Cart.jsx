@@ -18,7 +18,7 @@ const Cart = () => {
         }
     };
 
-    // Fungsi untuk mengurangi jumlah produk
+    // Fungsi mengurangi item dri cart 
     const decreaseQuantity = (product) => {
         if (product.qty > 1) {
             dispatch(addCart({ ...product, qty: product.qty - 1 }));
@@ -37,16 +37,21 @@ const Cart = () => {
 
     // Fungsi untuk melakukan checkout
     const handleCheckout = () => {
-        Swal.fire({
-            title: 'Checkout Berhasil!',
-            text: 'Terima kasih telah berbelanja di toko kami.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            dispatch({ type: 'CLEARCART' }); // Mengosongkan cart setelah checkout
-            navigate('/'); // Kembali ke halaman utama
-        });
+        alert("Checkout berhasil!");
+
+        // Mengosongkan cart di Redux
+        dispatch({ type: 'CLEARCART' });
+
+        navigate("/");
     };
+
+    const stock = {
+        1: 10,
+    };
+
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
 
     return (
         <div className="container mt-5">
