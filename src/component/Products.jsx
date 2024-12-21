@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { addCart } from '../redux/action';
+import Swal from 'sweetalert2';
 
 const Products = () => {
     const [filter, setFilter] = useState([]);
     const [loading, setLoading] = useState(false);
     const [hoveredProduct, setHoveredProduct] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState('All'); // Menyimpan kategori yang dipilih
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -18,9 +20,10 @@ const Products = () => {
                 const products = await response.json();
                 const productsWithQty = products.map((product) => ({
                     ...product,
-                    qty: 20,
+                    qty: 20, // Initial quantity
+                    category: product.category || 'Uncategorized', // Pastikan ada kategori
                 }));
-                setFilter(productsWithQty); // Hanya menggunakan filter
+                setFilter(productsWithQty);
             } catch (error) {
                 console.error('Error fetching products:', error);
             } finally {
@@ -33,12 +36,18 @@ const Products = () => {
     const handleAddToCart = (product) => {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         if (!isLoggedIn) {
-            localStorage.setItem('pendingProduct', JSON.stringify(product));
-            navigate('/login');
+            Swal.fire({
+                title: 'You must login!',
+                text: 'Please login to add product to your cart.',
+                icon: 'warning',
+                confirmButtonText: 'Login',
+            }).then(() => {
+                navigate('/login');
+            });
         } else {
             if (product.qty > 0) {
-                dispatch(addCart(product));
                 const updatedProduct = { ...product, qty: product.qty - 1 };
+                dispatch(addCart(updatedProduct));
                 setFilter((prevFilter) =>
                     prevFilter.map((p) => (p.id === product.id ? updatedProduct : p))
                 );
@@ -51,10 +60,22 @@ const Products = () => {
     const handleMouseEnter = (id) => setHoveredProduct(id);
     const handleMouseLeave = () => setHoveredProduct(null);
 
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+    };
+
+    const getCategories = () => {
+        // Menampilkan kategori unik yang ada pada produk
+        const categories = ['All', ...new Set(filter.map((product) => product.category))];
+        return categories;
+    };
+
+    const filteredProducts = selectedCategory === 'All' ? filter : filter.filter((product) => product.category === selectedCategory);
+
     const ShowProducts = () => {
         return (
             <>
-                {filter.map((product) => {
+                {filteredProducts.map((product) => {
                     const isHovered = hoveredProduct === product.id;
                     return (
                         <div
@@ -81,7 +102,7 @@ const Products = () => {
                                 />
                                 <div className="card-body">
                                     <h5 className="card-title mb-0">
-                                        {product.title.substring(0, 12)}
+                                        {product.title.substring(0, 20)}
                                     </h5>
                                     <p className="card-text lead fw-bold">${product.price}</p>
                                     <p className="card-text text-secondary">Qty: {product.qty}</p>
@@ -115,7 +136,23 @@ const Products = () => {
                         <hr />
                     </div>
                 </div>
-                <div className="row justify-content-center">
+                <div className="row">
+                    <div className="col-12 mb-4">
+                        <div className="d-flex justify-content-center">
+                            {getCategories().map((category) => (
+                                <button
+                                    key={category}
+                                    className={`btn btn-outline-primary me-2 ${selectedCategory === category ? 'active' : ''}`}
+                                    onClick={() => handleCategoryChange(category)}
+                                >
+                                    {category}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                </div>
+                <div className="row justify-content-center py-3">
                     {loading ? <div>Loading...</div> : <ShowProducts />}
                 </div>
             </div>

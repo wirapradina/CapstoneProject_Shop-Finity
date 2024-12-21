@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addCart } from '../redux/action';
 import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -14,8 +15,15 @@ const ProductDetail = () => {
     const addProduct = (product) => {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         if (!isLoggedIn) {
-            alert('You need to log in to add items to your cart.');
-            navigate('/login');
+            Swal.fire({
+                title: 'You must login!',
+                text: 'Please login to add product to your cart.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                navigate("/login");
+            });
+            
         } else {
             if (product.qty > 0) {
                 dispatch(addCart(product));

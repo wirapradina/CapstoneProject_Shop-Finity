@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 const Navbar = () => {
     const state = useSelector((state) => state.handleCart);
-    
+
     // Memastikan bahwa state adalah array yang valid sebelum melakukan reduce
     const totalItems = Array.isArray(state) ? state.reduce((acc, item) => acc + item.qty, 0) : 0;
 
@@ -13,8 +13,8 @@ const Navbar = () => {
 
     const handleLogout = () => {
         Swal.fire({
-            title: 'Logout Berhasil!',
-            text: 'Anda telah berhasil logout.',
+            title: 'Logout Successful!',
+            text: 'Successfully logged out.',
             icon: 'success',
             confirmButtonText: 'OK',
         }).then(() => {
@@ -60,7 +60,7 @@ const Navbar = () => {
                             )}
                             {isLoggedIn ? (
                                 <button className="btn btn-outline-dark ms-2" onClick={handleLogout}>
-                                    Logout
+                                    <i className="fa fa-sign-out me-1"></i> Logout
                                 </button>
                             ) : (
                                 <NavLink 

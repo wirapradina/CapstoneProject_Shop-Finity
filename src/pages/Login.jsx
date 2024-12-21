@@ -25,8 +25,8 @@ const Login = () => {
                 localStorage.setItem('username', user.username);
 
                 Swal.fire({
-                    title: 'Login Berhasil!',
-                    text: `Selamat datang, ${user.username}!`,
+                    title: 'Login Successful!',
+                    text: `Welcome, ${user.username}!`,
                     icon: 'success',
                     confirmButtonText: 'OK',
                 }).then(() => {
@@ -44,52 +44,74 @@ const Login = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h2 className="text-center mb-4 py-3">Login</h2>
-            <div className="row justify-content-center">
-                <div className="col-md-4">
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-3">
-                            <label htmlFor="email" className="form-label">Email</label>
-                            <input
-                                type="email"
-                                className="form-control"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                disabled={isLoading}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="password" className="form-label">Password</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                disabled={isLoading}
-                            />
-                        </div>
-                        {error && <div className="alert alert-danger">{error}</div>}
-                        <button
-                            type="submit"
-                            className="btn btn-primary w-100"
+        <div
+            className="d-flex align-items-center justify-content-center vh-100"
+            style={{
+                backgroundSize: 'cover',
+            }}
+        >
+            <div
+                className="card p-4 shadow-lg"
+                style={{
+                    width: '100%',
+                    maxWidth: '400px',
+                    borderRadius: '15px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                }}
+            >
+                <h2 className="text-center mb-4 py-2">Login</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
                             disabled={isLoading}
-                        >
-                            {isLoading ? (
-                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            ) : (
-                                'Login'
-                            )}
-                        </button>
-                        <div className="text-center mt-2">
-                            <div>email: john@gmail.com</div>
-                            <div>password: m38rmF$</div>
-                        </div>
-                    </form>
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            disabled={isLoading}
+                        />
+                    </div>
+                    {error && <div className="alert alert-danger">{error}</div>}
+                    <button
+                        type="submit"
+                        className="btn btn-primary w-100"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                            ></span>
+                        ) : (
+                            'Login'
+                        )}
+                    </button>
+                </form>
+                <div className="text-center mt-3">
+                    <p className="mb-1">Test Credentials:</p>
+                    <div className="text-muted">
+                        <div>Email: <strong>john@gmail.com</strong></div>
+                        <div>Password: <strong>m38rmF$</strong></div>
+                    </div>
                 </div>
             </div>
         </div>
