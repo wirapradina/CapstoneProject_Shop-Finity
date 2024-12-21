@@ -1,7 +1,6 @@
-import { createStore } from "redux";
-import rootReducers from "./reducer";
-import handleCart from "./reducer/handleCart";
+import { createStore } from 'redux';
+import rootReducer from './reducer'; // Pastikan jalur ini benar
 
-const store = createStore(rootReducers);
+const store = createStore(rootReducer);
 
 export default store;

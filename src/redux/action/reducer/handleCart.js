@@ -1,41 +1,41 @@
-const handleCart = (state = [], action) => {
-    const product = action.payload;
+const initialState = [];
 
-    switch (action.type) {
-        case "ADDITEM":
-            // Jika produk sudah ada di cart, update qty
-            const exist = state.find((x) => x.id === product.id);
-            if (exist) {
-                // Jika produk sudah ada, perbarui qty
-                return state.map((x) =>
-                    x.id === product.id ? { ...x, qty: x.qty + 1 } : x
-                );
-            } else {
-                return [
-                    ...state,
-                    {
-                        ...product,
-                        qty: 1,
-                    },
-                ];
-            }
+const handleCart = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADDITEM':
+      // Check if the item is already in the cart
+      const existingItem = state.find((item) => item.id === action.payload.id);
+      if (existingItem) {
+        // If item already exists in the cart, increase its quantity
+        return state.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, qty: item.qty + 1 }
+            : item
+        );
+      } else {
+        // If item is not in the cart, add it with qty = 1
+        return [...state, { ...action.payload, qty: 1 }];
+      }
 
-        case "DECREASEITEM":
-            return state.map((x) =>
-                x.id === product.id && x.qty > 1
-                    ? { ...x, qty: x.qty - 1 }
-                    : x
-            );
+    case 'DECREASEITEM':
+      // Decrease the quantity of an item, but not below 1
+      return state.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, qty: Math.max(item.qty - 1, 1) }  // Ensure qty doesn't go below 1
+          : item
+      );
 
-        case "DELITEM":
-            return state.filter((x) => x.id !== product.id);
+    case 'DELITEM':
+      // Remove the item from the cart
+      return state.filter((item) => item.id !== action.payload.id);
 
-        case "CLEARCART":
-            return [];
+    case 'CLEARCART':
+      // Clear all items from the cart
+      return [];
 
-        default:
-            return state;
-    }
+    default:
+      return state;
+  }
 };
 
 export default handleCart;

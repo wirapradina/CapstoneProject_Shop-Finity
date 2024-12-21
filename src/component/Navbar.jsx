@@ -1,15 +1,26 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
     const state = useSelector((state) => state.handleCart);
-    const totalItems = state.reduce((acc, item) => acc + item.qty, 0);
+    
+    // Memastikan bahwa state adalah array yang valid sebelum melakukan reduce
+    const totalItems = Array.isArray(state) ? state.reduce((acc, item) => acc + item.qty, 0) : 0;
+
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn');
-        navigate('/'); 
+        Swal.fire({
+            title: 'Logout Berhasil!',
+            text: 'Anda telah berhasil logout.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+        }).then(() => {
+            localStorage.removeItem('isLoggedIn');
+            navigate('/');
+        });
     };
 
     const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -53,7 +64,7 @@ const Navbar = () => {
                                 </button>
                             ) : (
                                 <NavLink 
-                                    to="/login"
+                                    to="/login" 
                                     className="btn btn-outline-dark ms-2"
                                 >
                                     <i className="fa fa-sign-in me-1"></i> Login

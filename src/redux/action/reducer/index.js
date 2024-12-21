@@ -1,8 +1,10 @@
-import handleCart from "./handleCart";
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
+import handleCart from './handleCart';
+import productReducer from './productReducer';
 
-const rootReducers = combineReducers({
-    handleCart,
-})
+const rootReducer = combineReducers({
+    cart: handleCart, // Untuk keranjang
+    products: productReducer, // Untuk produk
+});
 
-export default rootReducers;
+export default rootReducer;
