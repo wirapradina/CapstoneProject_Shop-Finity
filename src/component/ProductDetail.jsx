@@ -11,7 +11,6 @@ const ProductDetail = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // Tambahkan produk ke keranjang
     const addProduct = (product) => {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         if (!isLoggedIn) {
@@ -39,7 +38,6 @@ const ProductDetail = () => {
         const getProduct = async () => {
             setLoading(true);
             try {
-                // Gunakan variabel lingkungan untuk URL API
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/products/${id}`);
                 const data = await response.json();
 
