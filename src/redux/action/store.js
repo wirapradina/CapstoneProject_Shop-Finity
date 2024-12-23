@@ -1,10 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import handleCart from './reducer/handleCart';
-import handleProducts from './reducer/handleProducts'; // Tambahkan ini
+import handleProducts from './reducer/handleProducts';
 
 const rootReducer = combineReducers({
     handleCart,
-    handleProducts, // Jangan lupa tambahkan handleProducts di sini
+    handleProducts,
 });
 
 const store = createStore(rootReducer);
