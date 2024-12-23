@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
 const Navbar = () => {
     const state = useSelector((state) => state.handleCart);
 
-    // Memastikan bahwa state adalah array yang valid sebelum melakukan reduce
     const totalItems = Array.isArray(state) ? state.reduce((acc, item) => acc + item.qty, 0) : 0;
 
     const navigate = useNavigate();
