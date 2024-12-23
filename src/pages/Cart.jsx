@@ -9,19 +9,16 @@ const Cart = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // Menghitung total harga (memoized)
     const calculateTotal = useMemo(() => {
         return cart.reduce((total, item) => total + item.qty * item.price, 0);
     }, [cart]);
 
-    // Fungsi untuk menangani penambahan kuantitas
     const handleIncreaseQty = (item) => {
         if (item.qty < 20) {
             const updatedItem = { ...item, qty: item.qty + 1 };
-            console.log(`Increased qty for product ${item.title}: ${updatedItem.qty}`); // Debugging log
-            dispatch(updateProductQty(item.id, updatedItem.qty)); // Mengirim aksi untuk mengupdate kuantitas di store
+            console.log(`Increased qty for product ${item.title}: ${updatedItem.qty}`);
+            dispatch(updateProductQty(item.id, updatedItem.qty)); 
         } else {
-            // Menampilkan SweetAlert jika kuantitas sudah mencapai 20
             Swal.fire({
                 title: 'Maximum Quantity Reached',
                 text: 'You cannot add more than 20 items of this product.',
@@ -31,14 +28,12 @@ const Cart = () => {
         }
     };
 
-    // Fungsi untuk menangani pengurangan kuantitas
     const handleDecreaseQty = (item) => {
         if (item.qty > 1) {
             const updatedItem = { ...item, qty: item.qty - 1 };
-            console.log(`Decreased qty for product ${item.title}: ${updatedItem.qty}`); // Debugging log
-            dispatch(updateProductQty(item.id, updatedItem.qty)); // Mengirim aksi untuk mengupdate kuantitas di store
+            console.log(`Decreased qty for product ${item.title}: ${updatedItem.qty}`);
+            dispatch(updateProductQty(item.id, updatedItem.qty));
         } else {
-            // Menampilkan SweetAlert jika kuantitas sudah mencapai 1 dan tidak bisa dikurangi lagi
             Swal.fire({
                 title: 'Minimum Quantity Reached',
                 text: 'You cannot have less than 1 item of this product.',
@@ -48,7 +43,6 @@ const Cart = () => {
         }
     };
 
-    // Fungsi untuk handle checkout
     const handleCheckout = () => {
         console.log("Cart before checkout:", cart);
         Swal.fire({
@@ -58,14 +52,11 @@ const Cart = () => {
             confirmButtonText: 'OK'
         }).then(() => {
             try {
-                // Proses update kuantitas untuk setiap produk di keranjang
                 cart.forEach(item => {
                     console.log("Updating product with ID:", item.id, "and qty:", item.qty);
-                    dispatch(updateProductQty(item.id, item.qty)); // Mengirim aksi untuk mengupdate kuantitas di store
+                    dispatch(updateProductQty(item.id, item.qty));
                 });
-                // Kosongkan keranjang setelah checkout
                 dispatch(clearCart());
-                // Navigasi ke halaman lain setelah checkout
                 navigate("/");
             } catch (error) {
                 console.error("Checkout failed:", error);
@@ -79,7 +70,6 @@ const Cart = () => {
         });
     };
 
-    // Fungsi untuk menangani penghapusan produk
     const handleDelete = (item) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -90,7 +80,7 @@ const Cart = () => {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(delCart(item)); // Menghapus produk dari keranjang
+                dispatch(delCart(item));
                 Swal.fire({
                     title: 'Deleted!',
                     text: `${item.title} has been removed from your cart.`,
@@ -126,7 +116,7 @@ const Cart = () => {
                                         src={item.image}
                                         alt={item.title}
                                         style={{ width: '100px', height: '100px' }}
-                                        onError={(e) => (e.target.src = '/placeholder.png')} // Fallback image
+                                        onError={(e) => (e.target.src = '/placeholder.png')}
                                     />
                                 </td>
                                 <td>{item.title}</td>
@@ -150,7 +140,7 @@ const Cart = () => {
                                 <td className="text-center">
                                     <button
                                         className="btn btn-danger btn-sm"
-                                        onClick={() => handleDelete(item)} // Menggunakan handleDelete dengan SweetAlert
+                                        onClick={() => handleDelete(item)}
                                     >
                                         Delete
                                     </button>
