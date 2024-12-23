@@ -8,7 +8,7 @@ const Products = () => {
     const [filter, setFilter] = useState([]);
     const [loading, setLoading] = useState(false);
     const [hoveredProduct, setHoveredProduct] = useState(null);
-    const [selectedCategory, setSelectedCategory] = useState('All'); // Menyimpan kategori yang dipilih
+    const [selectedCategory, setSelectedCategory] = useState('All');
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -20,8 +20,8 @@ const Products = () => {
                 const products = await response.json();
                 const productsWithQty = products.map((product) => ({
                     ...product,
-                    qty: 20, // Initial quantity
-                    category: product.category || 'Uncategorized', // Pastikan ada kategori
+                    qty: 20,
+                    category: product.category || 'Uncategorized', 
                 }));
                 setFilter(productsWithQty);
             } catch (error) {
@@ -65,7 +65,6 @@ const Products = () => {
     };
 
     const getCategories = () => {
-        // Menampilkan kategori unik yang ada pada produk
         const categories = ['All', ...new Set(filter.map((product) => product.category))];
         return categories;
     };
