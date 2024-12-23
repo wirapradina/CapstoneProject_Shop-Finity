@@ -16,10 +16,12 @@ export const clearCart = () => ({
     type: 'CLEARCART',
 });
 
-export const updateProductQty = (productId, qty) => ({
-    type: 'UPDATE_PRODUCT_QTY',
-    payload: { productId, qty },
-});
+export const updateProductQty = (id, qty) => {
+    return {
+        type: 'UPDATE_PRODUCT_QTY',
+        payload: { id, qty },
+    };
+};
 
 export const setProducts = (products) => ({
     type: 'SET_PRODUCTS',

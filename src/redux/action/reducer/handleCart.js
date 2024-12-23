@@ -20,7 +20,11 @@ const handleCart = (state = cart, action) => {
 
         case 'CLEARCART':
             return [];
-
+        
+            case 'UPDATE_PRODUCT_QTY':
+            return state.map((item) =>
+                item.id === action.payload.id ? { ...item, qty: action.payload.qty } : item
+            );
         default:
             return state;
     }
